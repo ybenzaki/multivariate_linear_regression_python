@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 df = pd.read_excel("D:\DEV\PYTHON_PROGRAMMING\coursera_ml_exercices_in_python\Multivariate_Linear_Regression_dataset.xlsx")
 
 # df.head permet de voir les premières lignes chargées de notre fichier Excel
-print df.head()
+print (df.head())
 
 #Récupérer le prix : les valeurs observées pour la variable Cible
 Y = df["prix"]
@@ -27,7 +27,7 @@ X = df[['taille_en_pieds_carre','nb_chambres']]
 # alors que le nombre de chambre est généralement plus petit que 10
 
 scale = StandardScaler()
-X_scaled = scale.fit_transform(X[['taille_en_pieds_carre', 'nb_chambres']].as_matrix())
+X_scaled = scale.fit_transform(X[['taille_en_pieds_carre', 'nb_chambres']])
 
 #print X_scaled
 
@@ -36,7 +36,7 @@ X_scaled = scale.fit_transform(X[['taille_en_pieds_carre', 'nb_chambres']].as_ma
 # à Noter ici que X comporte nos deux variables prédictives
 est = sm.OLS(Y, X).fit()
 
-print est.summary()
+print (est.summary())
 
 fig = plt.figure()
 #use this line to print only one figure
@@ -68,10 +68,17 @@ def predict_all(lst_sizes, lst_nb_chmbres):
 
 # set up the axes for the second plot
 ax = fig.add_subplot(1, 2, 2, projection='3d')
-
 ax.plot_trisurf(df["taille_en_pieds_carre"], df["nb_chambres"], predict_all(df["taille_en_pieds_carre"], df["nb_chambres"]))
+plt.show()
 
-
+#display 3D plan and scatter plot 3D
+fig = plt.figure(2)
+ax = fig.add_subplot(1,2,1, projection='3d')
+ax.scatter(df["taille_en_pieds_carre"], df["nb_chambres"], df["prix"], c='r', marker='^')
+ax.plot_trisurf(df["taille_en_pieds_carre"], df["nb_chambres"], predict_all(df["taille_en_pieds_carre"], df["nb_chambres"]))
+ax.set_xlabel('surface en pieds_carre')
+ax.set_ylabel('nb_chambres')
+ax.set_zlabel('prix en $')
 plt.show()
 
 print predict_price_of_house(4500,5)
